@@ -49,33 +49,48 @@ public class BookDAO implements IBookDAO{
 
 	@Override
 	public IBook getBookByID(int id) {
-		// TODO Auto-generated method stub
 		
-		return null;
+		if(bookMap_.containsKey(id))	
+			return bookMap_.get(id);
+		else
+			return null;
 	}
 
+	
+	
 	@Override
 	public List<IBook> listBooks() {
 		// TODO Auto-generated method stub
-		return null;
+		return (List<IBook>) bookMap_.values();
 	}
 
+	
+	
 	@Override
 	public List<IBook> findBooksByAuthor(String author) {
 		// TODO Auto-generated method stub
-		return null;
+//		return (List<IBook>) bookMap_.get(author);
+		if(bookMap_.get(author) != null)
+		{
+			return null;
+		}
+		else
+			return null;
 	}
 
+	
+	
 	@Override
 	public List<IBook> findBooksByTitle(String title) {
 		// TODO Auto-generated method stub
-		return null;
+		return (List<IBook>) bookMap_.get(title);
 	}
 
+	
+	
 	@Override
 	public List<IBook> findBooksByAuthorTitle(String author, String title) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
