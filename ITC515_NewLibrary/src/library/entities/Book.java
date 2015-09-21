@@ -1,9 +1,10 @@
 package library.entities;
 
 import library.interfaces.entities.EBookState;
+import library.interfaces.entities.IBook;
 import library.interfaces.entities.ILoan;
 
-public class Book {
+public class Book implements IBook{
 
 	private int id_;
 	private String author_;
