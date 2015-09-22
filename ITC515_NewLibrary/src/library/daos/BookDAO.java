@@ -1,5 +1,6 @@
 package library.daos;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -36,13 +37,13 @@ public class BookDAO implements IBookDAO{
 		if(callNo == null || callNo.isEmpty())
 			throw new IllegalArgumentException ("Error: Call Number is invalid.");
 		
-		IBook book1 = helper_.makeBook(author, title, callNo, nextId_);
+		IBook book = helper_.makeBook(author, title, callNo, nextId_);
 	
-		bookMap_.put(nextId_, book1);
+		bookMap_.put(nextId_, book);
 		
 		nextId_++;
 		
-		return book1;
+		return book;
 	}
 
 	
@@ -50,7 +51,7 @@ public class BookDAO implements IBookDAO{
 	@Override
 	public IBook getBookByID(int id) {
 		
-		if(bookMap_.containsKey(id))	
+		if(bookMap_.containsKey(id))
 			return bookMap_.get(id);
 		else
 			return null;
@@ -60,37 +61,70 @@ public class BookDAO implements IBookDAO{
 	
 	@Override
 	public List<IBook> listBooks() {
-		// TODO Auto-generated method stub
-		return (List<IBook>) bookMap_.values();
+		
+		List<IBook> books = new ArrayList<IBook>(bookMap_.values());
+		
+		return books;
+//		return (List<IBook>) bookMap_.values();
 	}
 
 	
 	
 	@Override
 	public List<IBook> findBooksByAuthor(String author) {
-		// TODO Auto-generated method stub
-//		return (List<IBook>) bookMap_.get(author);
-		if(bookMap_.get(author) != null)
+	
+		List<IBook> authorList = new ArrayList<IBook>();
+		List<IBook> allBooks = new ArrayList<IBook>(bookMap_.values());
+	
+		for(int i=0; i<allBooks.size();i++)
 		{
-			return null;
+			if(allBooks.get(i).getAuthor().equals(author))
+				authorList.add(allBooks.get(i));
 		}
-		else
-			return null;
+		
+		return authorList;
+		
+//		authorList = (List<IBook>) bookMap_.values();
+//		for(int i=0; i<authorList.size();i++)
+//		{
+//			if(authorList.contains(author))
+//				return (List<IBook>) bookMap_.get(author);
+//		}
+//		
+//		return authorList;
 	}
 
 	
 	
 	@Override
 	public List<IBook> findBooksByTitle(String title) {
-		// TODO Auto-generated method stub
-		return (List<IBook>) bookMap_.get(title);
+		
+		List<IBook> bookList = new ArrayList<>();
+		List<IBook> allBooks = new ArrayList<IBook>(bookMap_.values());
+		
+		for(int i=0; i<allBooks.size();i++)
+		{
+			if(allBooks.get(i).getTitle().equals(title))
+				bookList.add(allBooks.get(i));
+		}
+		
+		return bookList;
+					
 	}
-
 	
 	
 	@Override
 	public List<IBook> findBooksByAuthorTitle(String author, String title) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<IBook> findBooks = new ArrayList<>();
+		List<IBook> allBooks = new ArrayList<IBook>(bookMap_.values());
+		
+		for(int i=0; i<allBooks.size();i++)
+		{
+			if(allBooks.get(i).getAuthor().equals(author) && allBooks.get(i).getTitle().equals(title))
+				findBooks.add(allBooks.get(i));
+		}
+		
+		return findBooks;
 	}
 }
