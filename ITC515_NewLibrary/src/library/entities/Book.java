@@ -37,7 +37,7 @@ public class Book implements IBook{
 	public void borrow(ILoan loan)
 	{
 		if(loan == null)
-			throw new IllegalArgumentException ("Error: Title is invalid.");
+			throw new IllegalArgumentException ("Book is Available.");
 		if(state_ != EBookState.AVAILABLE)
 			throw new RuntimeException("Book not Available");
 		

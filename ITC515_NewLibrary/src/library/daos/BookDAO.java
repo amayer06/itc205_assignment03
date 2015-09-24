@@ -65,7 +65,6 @@ public class BookDAO implements IBookDAO{
 		List<IBook> books = new ArrayList<IBook>(bookMap_.values());
 		
 		return books;
-//		return (List<IBook>) bookMap_.values();
 	}
 
 	
@@ -83,15 +82,6 @@ public class BookDAO implements IBookDAO{
 		}
 		
 		return authorList;
-		
-//		authorList = (List<IBook>) bookMap_.values();
-//		for(int i=0; i<authorList.size();i++)
-//		{
-//			if(authorList.contains(author))
-//				return (List<IBook>) bookMap_.get(author);
-//		}
-//		
-//		return authorList;
 	}
 
 	
@@ -108,8 +98,7 @@ public class BookDAO implements IBookDAO{
 				bookList.add(allBooks.get(i));
 		}
 		
-		return bookList;
-					
+		return bookList;			
 	}
 	
 	

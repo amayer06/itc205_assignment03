@@ -1,18 +1,14 @@
 package test.lowlevelunittesting;
 
-import static org.junit.Assert.*;
 //import static org.mockito.Mockito*;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
+import static org.junit.Assert.*;
 import library.entities.Book;
 import library.interfaces.daos.IBookDAO;
 import library.interfaces.entities.EBookState;
 import library.interfaces.entities.IBook;
+
+
 import library.interfaces.entities.ILoan;
-import library.interfaces.entities.IMember;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,24 +17,26 @@ public class BookTest {
 
 	private IBookDAO bookDAO;
 	private static Book testBook;
-	private static EBookState nullLoan;
-	private static EBookState loan;
+	private static ILoan loan;
 
 	private final String author = "Stephenie Meyer";
 	private final String title = "Twilight";
 	private final String callNumber = "JHFJDS";
-	private final int id = 1;
+	private int id = 1;
+	
+//	private final IBook borrowBookLoan;
+	
+//	private final String borrowBookLoan = loan;
 
 	@Before
 	public void setUp() throws Exception {
 		
 		testBook = new Book(author, title, callNumber, id);
-		
-		
-//		IBook[] book = new IBook[15];
+				
+		IBook[] book = new IBook[15];
 
-//		IBook controlBook = bookDAO.addBook("author1", "title1", "callNo1");
-//		I = bookDAO.addBook("author1", "title2", "callNo2");
+
+//		IBook controlBook = bookDAO.addBook("author1", "title2", "callNo2");
 //		book[2] = bookDAO.addBook("author1", "title3", "callNo3");
 //		book[3] = bookDAO.addBook("author1", "title4", "callNo4");
 //		book[4] = bookDAO.addBook("author2", "title5", "callNo5");
@@ -52,9 +50,8 @@ public class BookTest {
 //		book[12] = bookDAO.addBook("author5", "title13", "callNo13");
 //		book[13] = bookDAO.addBook("author5", "title14", "callNo14");
 //		book[14] = bookDAO.addBook("author5", "title15", "callNo15");
-//
-//		Calendar cal = Calendar.getInstance();
-//		Date now = cal.getTime();
+
+
 	}
 
 	@Test
@@ -67,37 +64,55 @@ public class BookTest {
 		assertEquals(2, constructor1.getID());
 	}
 
-	// @Test
-	// public void testBorrow() {
-	//
-	//
-	// }
-	//
-	// @Test
-	// public void testGetLoan() {
-	//
-	//
-	// // assertNull(EBookState.ON_LOAN,nullLoan);
-	// }
+	 @Test
+	 public void testBorrow() {
+//		 Book borrowBookLoan = new Book(author, title, callNumber,id);
+//		 borrowBookLoan.borrow(loan);
+//		 Book borrowBookNull = new Book(author, title, callNumber,id);
+//		 borrowBookNull.borrow(null);
+//		 
+//		 IBook borrowBookNull = bookDAO.addBook("author3", "title3", "callNumber3");
+//		 borrowBookNull.borrow(null);
+//		 IBook borrowBookLoan = bookDAO.addBook("author2", "title2", "callNumber2");
+//		 borrowBookLoan.borrow(loan);
+//		 
+//		 assertEquals(borrowBookNull, null);
+//		 assertEquals(borrowBookLoan, loan);
+	
+
+	
+	 }
+	
+//	 @Test
+//	 public void testGetLoan() {
+//		 
+//		 IBook borrowBookNull = bookDAO.addBook("author3", "title3", "callNumber3");
+//		 borrowBookNull.borrow(null);
+//		 IBook borrowBookLoan = bookDAO.addBook("author2", "title2", "callNumber2");
+//		 borrowBookLoan.borrow(loan);
+//		 
+//		 assertEquals(borrowBookNull, null);
+//		 assertEquals(borrowBookLoan, loan);
+//	 }
 	//
 	//
 	// @Test
 	// public void testReturnBook() {
 	//
-	//
-	// }
-	//
-	// @Test
-	// public void testLost() {
-	//
-	//
-	// }
-	//
-	// @Test
-	// public void testRepair() {
-	//
-	//
-	// }
+//	
+//	 }
+//	
+//	 @Test
+//	 public void testLose() {
+//
+//	
+//	 }
+//	
+//	 @Test
+//	 public void testRepair() {
+//	
+//	
+//	 }
 	//
 	// @Test
 	// public void testDispose() {
@@ -110,6 +125,7 @@ public class BookTest {
 	//
 	//
 	// }
+
 
 	@Test
 	public void testGetAuthor() {
