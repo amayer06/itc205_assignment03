@@ -1,5 +1,7 @@
 package library;
 
+import library.daos.BookDAO;
+import library.daos.BookHelper;
 import library.hardware.CardReader;
 import library.hardware.Display;
 import library.hardware.Printer;
@@ -10,8 +12,10 @@ import java.util.Date;
 
 import library.interfaces.IMainListener;
 import library.interfaces.daos.IBookDAO;
+import library.interfaces.daos.IBookHelper;
 import library.interfaces.daos.ILoanDAO;
 import library.interfaces.daos.IMemberDAO;
+import library.interfaces.daos.IMemberHelper;
 import library.interfaces.entities.IBook;
 import library.interfaces.entities.ILoan;
 import library.interfaces.entities.IMember;
@@ -33,7 +37,10 @@ public class Main implements IMainListener {
 		printer = new Printer();
 		display = new Display();
 		
-		//setupTestData();
+//		bookDAO = new BookDAO((IBookHelper) new BookHelper());
+		
+		
+//		setupTestData();
 	}
 
 
