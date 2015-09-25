@@ -25,21 +25,21 @@ import library.interfaces.hardware.IScannerListener;
 public class BorrowUC_CTL implements ICardReaderListener, IScannerListener,
 		IBorrowUIListener {
 
-	private ICardReader reader;
-	private IScanner scanner;
-	private IPrinter printer;
-	private IDisplay display;
+	private ICardReader reader_;
+	private IScanner scanner_;
+	private IPrinter printer_;
+	private IDisplay display_;
 	// private String state;
-	private int scanCount = 0;
-	private IBorrowUI ui;
-	private EBorrowState state;
-	private IBookDAO bookDAO;
-	private IMemberDAO memberDAO;
-	private ILoanDAO loanDAO;
+	private int scanCount_ = 0;
+	private IBorrowUI ui_;
+	private EBorrowState state_;
+	private IBookDAO bookDAO_;
+	private IMemberDAO memberDAO_;
+	private ILoanDAO loanDAO_;
 
-	private List<IBook> bookList;
-	private List<ILoan> loanList;
-	private IMember borrower;
+	private List<IBook> bookList_;
+	private List<ILoan> loanList_;
+	private IMember borrower_;
 
 	private JPanel previous;
 
@@ -47,39 +47,48 @@ public class BorrowUC_CTL implements ICardReaderListener, IScannerListener,
 			IDisplay display, IBookDAO bookDAO, ILoanDAO loanDAO,
 			IMemberDAO memberDAO) {
 
-		this.display = display;
-		this.ui = new BorrowUC_UI(this);
-		state = EBorrowState.CREATED;
+		this.display_ = display;
+		this.ui_ = new BorrowUC_UI(this);
+		state_ = EBorrowState.CREATED;
+		
 
-		this.reader = reader;
-		this.scanner = scanner;
-		this.printer = printer;
-		this.bookDAO = bookDAO;
-		this.loanDAO = loanDAO;
-		this.memberDAO = memberDAO;
+		this.reader_ = reader;
+		this.scanner_ = scanner;
+		this.printer_ = printer;
+		this.bookDAO_ = bookDAO;
+		this.loanDAO_ = loanDAO;
+		this.memberDAO_ = memberDAO;
+		
+		setState(EBorrowState.CREATED);
 	}
 
 	public void initialise() {
-		previous = display.getDisplay();
-		display.setDisplay((JPanel) ui, "Borrow UI");
+		previous = display_.getDisplay();
+		display_.setDisplay((JPanel) ui_, "Borrow UI");
 	}
 
 	public void close() {
-		display.setDisplay(previous, "Main Menu");
+		display_.setDisplay(previous, "Main Menu");
 	}
 
 	@Override
 	public void cardSwiped(int memberID) {
-		throw new RuntimeException("Not implemented yet");
+
+		//TODO Remove. throw new RuntimeException("Not implemented yet");
 	}
+
+
 
 	@Override
 	public void bookScanned(int barcode) {
 		throw new RuntimeException("Not implemented yet");
 	}
 
+
 	private void setState(EBorrowState state) {
-		throw new RuntimeException("Not implemented yet");
+		this.state_ = state;
+		this.reader_.setEnabled(state == EBorrowState.CREATED);
+		this.scanner_.setEnabled(state == EBorrowState.SCANNING_BOOKS);
 	}
 
 	@Override
@@ -105,8 +114,7 @@ public class BorrowUC_CTL implements ICardReaderListener, IScannerListener,
 	private String buildLoanListDisplay(List<ILoan> loans) {
 		StringBuilder bld = new StringBuilder();
 		for (ILoan ln : loans) {
-			if (bld.length() > 0)
-				bld.append("\n\n");
+			if (bld.length() > 0) bld.append("\n\n");
 			bld.append(ln.toString());
 		}
 		return bld.toString();
