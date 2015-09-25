@@ -20,9 +20,9 @@ public class BookHelperTest {
 	public void testMakeBook() {
 
 		// create mock
-		BookHelper testHelper = (BookHelper) mock(BookHelper.class);
+		BookHelper testHelper = mock(BookHelper.class);
 
-		Book book = new Book(author, title, callNumber, id);
+		Book book = new Book("Stephenie Meyer", "Twilight", "JHFJDS", 1);
 
 		when(testHelper.makeBook(author, title, callNumber, id)).thenReturn(book);
 
