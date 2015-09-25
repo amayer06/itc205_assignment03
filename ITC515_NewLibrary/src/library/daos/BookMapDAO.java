@@ -11,13 +11,13 @@ import library.interfaces.daos.IBookDAO;
 import library.interfaces.daos.IBookHelper;
 import library.interfaces.entities.IBook;
 
-public class BookDAO implements IBookDAO{
+public class BookMapDAO implements IBookDAO{
 
 	private int nextId_;
 	private Map<Integer, IBook> bookMap_;
 	private IBookHelper helper_;
 	
-	public BookDAO (IBookHelper helper)
+	public BookMapDAO (IBookHelper helper)
 	{
 		if(helper == null)
 			throw new IllegalArgumentException ("Error: Helper is invalid.");

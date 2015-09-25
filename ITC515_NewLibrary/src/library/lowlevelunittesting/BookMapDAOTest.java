@@ -1,7 +1,7 @@
 package library.lowlevelunittesting;
 
 import static org.junit.Assert.*;
-import library.daos.BookDAO;
+import library.daos.BookMapDAO;
 import library.daos.BookHelper;
 import library.entities.Book;
 import library.interfaces.daos.IBookDAO;
@@ -16,7 +16,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 
-public class BookDAOTest {
+public class BookMapDAOTest {
 
 	
 	@Test
