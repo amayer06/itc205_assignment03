@@ -23,7 +23,7 @@ public class BookMapDAOTest {
 	public void testBookDAO()
 	{
 		//create mock
-		 IBook testBook = mock(IBook.class);
+		 BookMapDAO testBook = mock(BookMapDAO.class);
 		 IBookHelper testBookHelper = mock(IBookHelper.class);
 		 
 		 Book book = new Book("Maggie Stifvater", "Shiver", "JFJDJ1", 3);
