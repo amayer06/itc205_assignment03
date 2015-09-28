@@ -1,10 +1,9 @@
 package library.lowlevelunittesting;
 
 import static org.junit.Assert.*;
-
 import library.entities.Book;
 import library.interfaces.entities.EBookState;
-
+import library.interfaces.entities.IBook;
 import library.interfaces.entities.ILoan;
 
 import org.junit.Before;
@@ -12,27 +11,26 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
-
 public class BookTest {
 
-	private static Book testBook1;
-	private static EBookState ON_LOAN;
-
+	private static Book testBook;
 	private final String author = "Stephenie Meyer";
 	private final String title = "Twilight";
 	private final String callNumber = "JHFJDS";
 	private int id = 1;
-	
 
 	@Before
 	public void setUp() throws Exception {
-		
-		testBook1 = new Book(author, title, callNumber, id);
+
+		testBook = new Book(author, title, callNumber, id);
+
 	}
 
+	
+	
 	@Test
 	public void testBook() {
-		Book testBook2 = new Book("Kristin Cashore", "Graceling", "H2FGFF",2);
+		Book testBook2 = new Book("Kristin Cashore", "Graceling", "H2FGFF", 2);
 
 		assertEquals("Kristin Cashore", testBook2.getAuthor());
 		assertEquals("Graceling", testBook2.getTitle());
@@ -40,99 +38,348 @@ public class BookTest {
 		assertEquals(2, testBook2.getID());
 	}
 
-	 @Test
-	 public void testBorrow() {
+	
+	
+	@Test
+	public void testBorrow() {
 
-		//create mock
-		 ILoan testBorrow = mock(ILoan.class);
-		 
-		 Book book = new Book("Maggie Stifvater", "Shiver", "JFJDJ1", 3);
-	
-		 when(testBorrow.getBook()).thenReturn(book);
-		 when(testBorrow.isOverDue()).thenReturn(false);
-		 
-		 assertEquals(testBorrow.getBook(), book);
-	 }
-	
-	 @Test
-	 public void testGetLoan() {
-		 
-		 //create mock
-		 ILoan testGetLoan = mock(ILoan.class);
-		 
-		 Book book = new Book("Maggie Stifvater", "Linger", "H2J760", 4);
-		 
-		 when(testGetLoan.getBook()).thenReturn(book);
-		 when(testGetLoan.isOverDue()).thenReturn(false);
-		 
-		 assertEquals(testGetLoan.getBook(), book);
-	 }
-	
-	
-//	 @Test
-//	 public void testReturnBook() {
-//	
-//	
-//	 }
-//	
-//	 @Test
-//	 public void testLose() {
-//
-//		 
-//	 
-//	
-//	 }
-//	
-//	 @Test
-//	 public void testRepair() {
-//	
-//	
-//	 }
-	//
-	// @Test
-	// public void testDispose() {
-	//
-	//
-	// }
-	//
-	 @Test
-	 public void testGetState() {
-		 
-		 ILoan testGetState = mock(ILoan.class);
-		 
-		 Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+		// create mock
+		ILoan testBorrow = mock(ILoan.class);
 
-		 when(testGetState.getBook()).thenReturn(book);
-		 when(testGetState.isOverDue()).thenReturn(true);
-		 
-		 
-		 assertEquals(ON_LOAN, testBook1.getState());
-	 }
+		Book book = new Book("Maggie Stifvater", "Shiver", "JFJDJ1", 3);
 
+		when(testBorrow.getBook()).thenReturn(book);
+		when(testBorrow.isOverDue()).thenReturn(false);
+
+		assertEquals(testBorrow.getBook(), book);
+	}
+
+	
+	
+	@Test
+	public void testBorrowThrowsRuntimeExceptionNotAvailable() {
+
+		ILoan loan = null;
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.AVAILABLE);
+		try {
+			book.borrow(loan);
+			fail("Should have thrown RuntimeException");
+		} catch (RuntimeException r) {
+			assertTrue(true);
+		}
+	}
+
+	
+	
+	@Test
+	public void testGetLoan() {
+
+		// create mock
+		ILoan testGetLoan = mock(ILoan.class);
+
+		Book book = new Book("Maggie Stifvater", "Linger", "H2J760", 4);
+
+		when(testGetLoan.getBook()).thenReturn(book);
+		when(testGetLoan.isOverDue()).thenReturn(false);
+
+		assertEquals(testGetLoan.getBook(), book);
+	}
+
+	
+	
+	@Test
+	public void testReturnBookTrue() {
+
+		ILoan mockBook = mock(ILoan.class);
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+		book.setState(EBookState.ON_LOAN);
+
+		when(mockBook.getBook()).thenReturn(book);
+		when(mockBook.isOverDue()).thenReturn(false);
+	
+		assertEquals(book.getState(), EBookState.ON_LOAN);
+		
+		book.returnBook(true);
+
+		assertEquals(book.getState(), EBookState.DAMAGED);
+	}
+
+	
+	
+	@Test
+	public void testReturnBookFalse() {
+
+		ILoan mockBook = mock(ILoan.class);
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+		book.setState(EBookState.ON_LOAN);
+
+		when(mockBook.getBook()).thenReturn(book);
+		when(mockBook.isOverDue()).thenReturn(false);
+		
+		assertEquals(book.getState(), EBookState.ON_LOAN);
+		
+		book.returnBook(false);
+
+		assertEquals(book.getState(), EBookState.AVAILABLE);
+	}
+
+	@Test
+	public void testReturnBookThrowsRunTimeExceptionNotOnLoan() {
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.AVAILABLE);
+		try {
+			book.returnBook(true);
+			fail("Should have thrown RuntimeException");
+		} catch (RuntimeException r) {
+			assertTrue(true);
+		}
+	}
+
+	@Test
+	public void testLose() {
+
+		IBook mockBook = mock(IBook.class);
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.LOST);
+		when(mockBook.getState()).thenReturn(EBookState.LOST);
+
+		assertEquals(book.getState(), EBookState.LOST);
+	}
+
+	@Test
+	public void testLoseThrowsRunTimeException() {
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.AVAILABLE);
+		try {
+			book.lose();
+			fail("Should have thrown RuntimeException");
+		} catch (RuntimeException r) {
+			assertTrue(true);
+		}
+	}
+
+	@Test
+	public void testRepair() {
+
+		IBook mockBook = mock(IBook.class);
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.AVAILABLE);
+		when(mockBook.getState()).thenReturn(EBookState.AVAILABLE);
+
+		assertEquals(book.getState(), EBookState.AVAILABLE);
+	}
+
+	@Test
+	public void testRepairThrowsRuntimeExceptionNotDamaged() {
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.AVAILABLE);
+		try {
+			book.repair();
+			fail("Should have thrown RuntimeException");
+		} catch (RuntimeException r) {
+			assertTrue(true);
+		}
+	}
+
+	@Test
+	public void testDispose() {
+		IBook mockBook = mock(IBook.class);
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.DISPOSED);
+		when(mockBook.getState()).thenReturn(EBookState.DISPOSED);
+
+		assertEquals(book.getState(), EBookState.DISPOSED);
+	}
+
+	@Test
+	public void testDisposeThrowsRuntimeExceptionNotAvailable() {
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.AVAILABLE);
+		try {
+			book.dispose();
+			fail("Should have thrown RuntimeException");
+		} catch (RuntimeException r) {
+			assertTrue(true);
+		}
+	}
+
+	@Test
+	public void testDisposeThrowsRuntimeExceptionNotDamaged() {
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.DAMAGED);
+		try {
+			book.dispose();
+			fail("Should have thrown RuntimeException");
+		} catch (RuntimeException r) {
+			assertTrue(true);
+		}
+	}
+
+	@Test
+	public void testDisposeRuntimeExceptionNotLost() {
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.LOST);
+		try {
+			book.dispose();
+			fail("Should have thrown RuntimeException");
+		} catch (RuntimeException r) {
+			assertTrue(true);
+		}
+	}
+
+	@Test
+	public void testGetState() {
+
+		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
+
+		book.setState(EBookState.ON_LOAN);
+
+		assertEquals(book.getState(), EBookState.ON_LOAN);
+	}
 
 	@Test
 	public void testGetAuthor() {
 
-		assertEquals("Stephenie Meyer", testBook1.getAuthor());
+		assertEquals("Stephenie Meyer", testBook.getAuthor());
+	}
 
+	@Test
+	public void testGetAuthorThrowsIllegalArguementExceptionNull() {
+
+		try {
+			Book bookAuthorNull = new Book(null, "If I Stay", "78SJD5", 11);
+			bookAuthorNull.getAuthor();
+			fail("Should have thrown IllegalArguementException");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+	}
+
+	@Test
+	public void testGetAuthorThrowsIllegalArguementExceptionBlank() {
+
+		try {
+			Book bookAuthorBlank = new Book("", "If I Stay", "78SJD5", 11);
+			bookAuthorBlank.getAuthor();
+			fail("Should have thrown IllegalArguementException");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
 	}
 
 	@Test
 	public void testGetTitle() {
 
-		assertEquals("Twilight", testBook1.getTitle());
+		assertEquals("Twilight", testBook.getTitle());
 
+	}
+
+	@Test
+	public void testGetTitleThrowsIllegalArguementExceptionNull() {
+
+		try {
+			Book bookTitleNull = new Book("Gayle Forman", null, "78SJD5", 11);
+			bookTitleNull.getTitle();
+			fail("Should have thrown IllegalArguementException");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+	}
+
+	@Test
+	public void testGetTitleThrowsIllegalArguementExceptionBlank() {
+
+		try {
+			Book bookTitleBlank = new Book("Gayle Forman", "", "78SJD5", 11);
+			bookTitleBlank.getTitle();
+			fail("Should have thrown IllegalArguementException");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
 	}
 
 	@Test
 	public void testGetCallNumber() {
 
-		assertEquals("JHFJDS", testBook1.getCallNumber());
+		assertEquals("JHFJDS", testBook.getCallNumber());
+	}
+
+	@Test
+	public void testGetCallNumberThrowsIllegalArguementExceptionNull() {
+
+		try {
+			Book bookCallNumberNull = new Book("Gayle Forman", "If I Stay",
+					null, 11);
+			bookCallNumberNull.getCallNumber();
+			fail("Should have thrown IllegalArguementException");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+	}
+
+	@Test
+	public void testGetCallNumberThrowsIllegalArguementExceptionBlank() {
+
+		try {
+			Book bookCallNumberBlank = new Book("Gayle Forman", "If I Stay",
+					"", 11);
+			bookCallNumberBlank.getCallNumber();
+			fail("Should have thrown IllegalArguementException");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
 	}
 
 	@Test
 	public void testGetId() {
 
-		assertEquals(1, testBook1.getID());
+		assertEquals(1, testBook.getID());
+	}
+
+	@Test
+	public void testGetIdThrowsIllegalArguementExceptionLessThanZero() {
+
+		try {
+			Book bookIdLessThanZero = new Book("Gayle Forman", "If I Stay",
+					"78SJD5", -2);
+			bookIdLessThanZero.getID();
+			fail("Should have thrown IllegalArguementException");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
+	}
+
+	@Test
+	public void testGetIdThrowsIllegalArguementExceptionIsZero() {
+
+		try {
+			Book bookIdZero = new Book("Gayle Forman", "If I Stay", "78SJD5", 0);
+			bookIdZero.getID();
+			fail("Should have thrown IllegalArguementException");
+		} catch (IllegalArgumentException e) {
+			assertTrue(true);
+		}
 	}
 }

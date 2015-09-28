@@ -115,6 +115,13 @@ public class Book implements IBook{
 	}
 
 	
+//	Added this method, to make testing easier.
+	public void setState(EBookState state)
+	{
+		this.state_ = state;
+	}
+	
+	
 	
 	public String getAuthor()
 	{
