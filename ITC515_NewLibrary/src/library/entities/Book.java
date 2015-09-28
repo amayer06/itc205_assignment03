@@ -146,7 +146,7 @@ public class Book implements IBook{
 	
 	public String toString()
 	{
-		return "Book Call Number: " + callNumber_;
+		return "Author: " + author_ + " Title: " + title_ + " Book Call Number: " + callNumber_ + " ID:" + id_;
 	}
 	
 	
