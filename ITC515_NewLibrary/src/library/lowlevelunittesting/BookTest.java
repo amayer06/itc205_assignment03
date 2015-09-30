@@ -13,16 +13,16 @@ import static org.mockito.Mockito.*;
 
 public class BookTest {
 
-	private static Book testBook;
-	private final String author = "Stephenie Meyer";
-	private final String title = "Twilight";
-	private final String callNumber = "JHFJDS";
-	private int id = 1;
+	private static Book testBook_;
+	private final String author_ = "Stephenie Meyer";
+	private final String title_ = "Twilight";
+	private final String callNumber_ = "JHFJDS";
+	private int id_ = 1;
 
 	@Before
 	public void setUp() throws Exception {
 
-		testBook = new Book(author, title, callNumber, id);
+		testBook_ = new Book(author_, title_, callNumber_, id_);
 
 	}
 
@@ -127,6 +127,8 @@ public class BookTest {
 		assertEquals(book.getState(), EBookState.AVAILABLE);
 	}
 
+	
+	
 	@Test
 	public void testReturnBookThrowsRunTimeExceptionNotOnLoan() {
 
@@ -141,6 +143,8 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
 	public void testLose() {
 
@@ -154,6 +158,8 @@ public class BookTest {
 		assertEquals(book.getState(), EBookState.LOST);
 	}
 
+	
+	
 	@Test
 	public void testLoseThrowsRunTimeException() {
 
@@ -168,6 +174,8 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
 	public void testRepair() {
 
@@ -181,6 +189,8 @@ public class BookTest {
 		assertEquals(book.getState(), EBookState.AVAILABLE);
 	}
 
+	
+	
 	@Test
 	public void testRepairThrowsRuntimeExceptionNotDamaged() {
 
@@ -195,6 +205,8 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
 	public void testDispose() {
 		IBook mockBook = mock(IBook.class);
@@ -207,6 +219,8 @@ public class BookTest {
 		assertEquals(book.getState(), EBookState.DISPOSED);
 	}
 
+	
+	
 	@Test
 	public void testDisposeThrowsRuntimeExceptionNotAvailable() {
 
@@ -221,6 +235,8 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
 	public void testDisposeThrowsRuntimeExceptionNotDamaged() {
 
@@ -235,8 +251,10 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
-	public void testDisposeRuntimeExceptionNotLost() {
+	public void testDisposeThrowsRuntimeExceptionNotLost() {
 
 		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
 
@@ -249,6 +267,8 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
 	public void testGetState() {
 
@@ -259,14 +279,18 @@ public class BookTest {
 		assertEquals(book.getState(), EBookState.ON_LOAN);
 	}
 
+	
+	
 	@Test
 	public void testGetAuthor() {
 
-		assertEquals("Stephenie Meyer", testBook.getAuthor());
+		assertEquals("Stephenie Meyer", testBook_.getAuthor());
 	}
 
+	
+	
 	@Test
-	public void testGetAuthorThrowsIllegalArguementExceptionNull() {
+	public void testGetAuthorThrowsIllegalArgumentExceptionNull() {
 
 		try {
 			Book bookAuthorNull = new Book(null, "If I Stay", "78SJD5", 11);
@@ -277,8 +301,10 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
-	public void testGetAuthorThrowsIllegalArguementExceptionBlank() {
+	public void testGetAuthorThrowsIllegalArgumentExceptionBlank() {
 
 		try {
 			Book bookAuthorBlank = new Book("", "If I Stay", "78SJD5", 11);
@@ -289,15 +315,19 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
 	public void testGetTitle() {
 
-		assertEquals("Twilight", testBook.getTitle());
+		assertEquals("Twilight", testBook_.getTitle());
 
 	}
 
+	
+	
 	@Test
-	public void testGetTitleThrowsIllegalArguementExceptionNull() {
+	public void testGetTitleThrowsIllegalArgumentExceptionNull() {
 
 		try {
 			Book bookTitleNull = new Book("Gayle Forman", null, "78SJD5", 11);
@@ -308,8 +338,10 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
-	public void testGetTitleThrowsIllegalArguementExceptionBlank() {
+	public void testGetTitleThrowsIllegalArgumentExceptionBlank() {
 
 		try {
 			Book bookTitleBlank = new Book("Gayle Forman", "", "78SJD5", 11);
@@ -320,14 +352,18 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
 	public void testGetCallNumber() {
 
-		assertEquals("JHFJDS", testBook.getCallNumber());
+		assertEquals("JHFJDS", testBook_.getCallNumber());
 	}
 
+	
+	
 	@Test
-	public void testGetCallNumberThrowsIllegalArguementExceptionNull() {
+	public void testGetCallNumberThrowsIllegalArgumentExceptionNull() {
 
 		try {
 			Book bookCallNumberNull = new Book("Gayle Forman", "If I Stay",
@@ -339,8 +375,10 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
-	public void testGetCallNumberThrowsIllegalArguementExceptionBlank() {
+	public void testGetCallNumberThrowsIllegalArgumentExceptionBlank() {
 
 		try {
 			Book bookCallNumberBlank = new Book("Gayle Forman", "If I Stay",
@@ -352,14 +390,18 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
 	public void testGetId() {
 
-		assertEquals(1, testBook.getID());
+		assertEquals(1, testBook_.getID());
 	}
 
+	
+	
 	@Test
-	public void testGetIdThrowsIllegalArguementExceptionLessThanZero() {
+	public void testGetIdThrowsIllegalArgumentExceptionLessThanZero() {
 
 		try {
 			Book bookIdLessThanZero = new Book("Gayle Forman", "If I Stay",
@@ -371,8 +413,10 @@ public class BookTest {
 		}
 	}
 
+	
+	
 	@Test
-	public void testGetIdThrowsIllegalArguementExceptionIsZero() {
+	public void testGetIdThrowsIllegalArgumentExceptionIsZero() {
 
 		try {
 			Book bookIdZero = new Book("Gayle Forman", "If I Stay", "78SJD5", 0);
