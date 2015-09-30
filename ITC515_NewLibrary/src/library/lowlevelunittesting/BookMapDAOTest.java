@@ -55,11 +55,11 @@ public class BookMapDAOTest {
 	
 	
 	@Test
-	public void testBookMapDAO() // ThrowsIllegalArguementNull
+	public void testBookMapDAO() // ThrowsIllegalArgumentNull
 	{
 		try {
 			BookMapDAO bookMapDao = new BookMapDAO(null);
-			fail("Should have thrown IllegalArguementException");
+			fail("Should have thrown IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -68,7 +68,7 @@ public class BookMapDAOTest {
 	
 	
 	@Test
-	public void testaddBook() {
+	public void testAddBook() {
 		IBookDAO testBook = mock(IBookDAO.class);
 
 		Book book = new Book("Maggie Stifvater", "Shiver", "JFJDJ1", 3);

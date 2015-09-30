@@ -295,7 +295,7 @@ public class BookTest {
 		try {
 			Book bookAuthorNull = new Book(null, "If I Stay", "78SJD5", 11);
 			bookAuthorNull.getAuthor();
-			fail("Should have thrown IllegalArguementException");
+			fail("Should have thrown IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -309,7 +309,7 @@ public class BookTest {
 		try {
 			Book bookAuthorBlank = new Book("", "If I Stay", "78SJD5", 11);
 			bookAuthorBlank.getAuthor();
-			fail("Should have thrown IllegalArguementException");
+			fail("Should have thrown IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -332,7 +332,7 @@ public class BookTest {
 		try {
 			Book bookTitleNull = new Book("Gayle Forman", null, "78SJD5", 11);
 			bookTitleNull.getTitle();
-			fail("Should have thrown IllegalArguementException");
+			fail("Should have thrown IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -346,7 +346,7 @@ public class BookTest {
 		try {
 			Book bookTitleBlank = new Book("Gayle Forman", "", "78SJD5", 11);
 			bookTitleBlank.getTitle();
-			fail("Should have thrown IllegalArguementException");
+			fail("Should have thrown IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -369,7 +369,7 @@ public class BookTest {
 			Book bookCallNumberNull = new Book("Gayle Forman", "If I Stay",
 					null, 11);
 			bookCallNumberNull.getCallNumber();
-			fail("Should have thrown IllegalArguementException");
+			fail("Should have thrown IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -384,7 +384,7 @@ public class BookTest {
 			Book bookCallNumberBlank = new Book("Gayle Forman", "If I Stay",
 					"", 11);
 			bookCallNumberBlank.getCallNumber();
-			fail("Should have thrown IllegalArguementException");
+			fail("Should have thrown IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
@@ -407,7 +407,7 @@ public class BookTest {
 			Book bookIdLessThanZero = new Book("Gayle Forman", "If I Stay",
 					"78SJD5", -2);
 			bookIdLessThanZero.getID();
-			fail("Should have thrown IllegalArguementException");
+			fail("Should have thrown IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			assertTrue(true);
 		}
