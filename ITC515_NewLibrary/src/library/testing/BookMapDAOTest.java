@@ -1,4 +1,4 @@
-package library.lowlevelunittesting;
+package library.testing;
 
 import static org.junit.Assert.*;
 
