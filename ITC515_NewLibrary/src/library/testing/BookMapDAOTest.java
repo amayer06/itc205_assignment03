@@ -128,11 +128,12 @@ public class BookMapDAOTest {
 		bookDao.addBook("Simon Lowe", "The Bird", "JHJH");
 		bookDao.addBook("Sarah Bell", "The Castle", "IKIK");
 		
-		List<IBook> listBooks = bookDao.listBooks();
+		List<IBook> listBooks = bookDao.findBooksByAuthor("Simon Lowe");
 		
-		bookDao.findBooksByAuthor("Simon Lowe");
+		IBook theBird = listBooks.get(0);
 		
-		assertTrue(listBooks.contains(book1));
+		assertEquals(1, listBooks.size());
+		assertEquals("Simon Lowe", theBird.getAuthor());
 
 		clearSetUp();
 	}
@@ -148,12 +149,11 @@ public class BookMapDAOTest {
 		bookDao.addBook("Simon Lowe", "The Bird", "JHJH");
 		bookDao.addBook("Sarah Bell", "The Castle", "IKIK");
 		
-		List<IBook> listBooks = bookDao.listBooks();
+		List<IBook> listBooks = bookDao.findBooksByTitle("The Castle");
 		
-		bookDao.findBooksByTitle("The Bird");
-
-		assertEquals(bookDao.getBookByID(1), book1);
-		assertTrue(listBooks.contains(book1));
+		IBook theCastle = listBooks.get(0);
+		
+		assertEquals("The Castle", theCastle.getTitle());
 
 		clearSetUp();
 	}
@@ -169,12 +169,9 @@ public class BookMapDAOTest {
 		bookDao.addBook("Simon Lowe", "The Bird", "JHJH");
 		bookDao.addBook("Sarah Bell", "The Castle", "IKIK");
 		
-		List<IBook> listBooks = bookDao.listBooks();
-		
-		bookDao.findBooksByAuthorTitle("Simon Lowe", "The Bird");
-		bookDao.findBooksByTitle("The Bird");
-		
-		assertEquals(bookDao.getBookByID(1), book1);
+		List<IBook> listBooks = bookDao.findBooksByAuthorTitle("Simon Lowe", "The Bird");
+				
+		assertEquals(1, listBooks.size());
 		assertTrue(listBooks.contains(book1));
 		
 		clearSetUp();
