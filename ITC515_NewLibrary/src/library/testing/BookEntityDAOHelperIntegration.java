@@ -28,10 +28,10 @@ public class BookEntityDAOHelperIntegration {
 	IBook realBook2;
 
 	BookMapDAO bookMapDao;
-	String name1 = "Simon Lowe";
-	String title1 = "The Bird";
-	String callNo1 = "JHJH";
-	int id = 1;
+	private String name1 = "Simon Lowe";
+	private String title1 = "The Bird";
+	private String callNo1 = "JHJH";
+	private int id = 1;
 
 	@Before
 	public void setUp()
