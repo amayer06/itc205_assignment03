@@ -32,7 +32,6 @@ public class BookEntityEntityIntegrationTests {
     Date borrowDate_, dueDate_;
     Calendar cal_;
     
-
 	@Before
 	public void setUp() throws Exception {
 
@@ -49,15 +48,14 @@ public class BookEntityEntityIntegrationTests {
 
 	}
 	
+	
+	
     @After
-    public void tearDown() throws Exception {
-        
+    public void tearDown() throws Exception {  
     }
 
-	
-	
+
     
-	
     @Test
     public void testBorrowWhenAvailable() {
 
@@ -66,7 +64,6 @@ public class BookEntityEntityIntegrationTests {
         
         //execute
         testBook_.borrow(testLoan_);  
-        
         
         //asserts
         assertEquals(EBookState.ON_LOAN, testBook_.getState());
@@ -98,10 +95,10 @@ public class BookEntityEntityIntegrationTests {
     public void testGetLoan() {
 
         //setup
-        testBook_.borrow(testLoan_); 
+        testBook_.borrow(testLoan_);
+        
         //check
         assertEquals(EBookState.ON_LOAN, testBook_.getState());
-        
         
         //execute
         ILoan actual = testBook_.getLoan();
@@ -110,12 +107,13 @@ public class BookEntityEntityIntegrationTests {
         assertEquals(actual, testLoan_);
     }
 
+    
+    
     @Test
     public void testGetLoanWhenAvailable() {
 
-         //check
+        //check
         assertEquals(EBookState.AVAILABLE, testBook_.getState());
-        
         
         //execute
         ILoan actual = testBook_.getLoan();
@@ -124,6 +122,8 @@ public class BookEntityEntityIntegrationTests {
         assertNull(actual);
     }
 
+    
+    
     @Test
     public void testGetLoanWhenLost() {
         
@@ -131,20 +131,13 @@ public class BookEntityEntityIntegrationTests {
         testBook_.borrow(testLoan_);
         testBook_.lose();
 
-         //check
+        //check
         assertEquals(EBookState.LOST, testBook_.getState());
-        
         
         //execute
         ILoan actual = testBook_.getLoan();
         
         //asserts
         assertNull(actual);
-    }
-
-	
-	
-
-	
-	
+    }	
 }
