@@ -137,7 +137,7 @@ public class BorrowBookOperationsIntegrationTests {
         verify(ui).displayMemberDetails(1, "fName0 lName0", "0001");
         verify(ui).displayExistingLoan(any(String.class));    
         
-        //assert
+        //asserts
         assertEquals(EBorrowState.SCANNING_BOOKS, ctl_.getState());
     }
     
@@ -158,7 +158,7 @@ public class BorrowBookOperationsIntegrationTests {
         verify(ui).displayOutstandingFineMessage(10.0f);
         verify(ui).displayOverFineLimitMessage(10.0f);  
         
-        //assert
+        //asserts
         assertEquals(EBorrowState.BORROWING_RESTRICTED, ctl_.getState());
     }
 
@@ -179,7 +179,7 @@ public class BorrowBookOperationsIntegrationTests {
         verify(ui).displayAtLoanLimitMessage();
         verify(ui).displayExistingLoan(any(String.class));
         
-        //assert
+        //asserts
         assertEquals(EBorrowState.BORROWING_RESTRICTED, ctl_.getState());
     }
     
@@ -200,8 +200,28 @@ public class BorrowBookOperationsIntegrationTests {
         verify(ui).displayOverDueMessage();
         verify(ui).displayExistingLoan(any(String.class));
         
-        //assert
+        //asserts
         assertEquals(EBorrowState.BORROWING_RESTRICTED, ctl_.getState());
+    }
+    
+    
+    
+    @Test
+    public void testCardSwipedBorrowingEnabledMemberDoesNot() {
+        //setup
+        ctl_.setState(EBorrowState.INITIALIZED);
+        
+        //execute
+        ctl_.cardSwiped(7);
+        
+      //verifies
+        verify(reader).setEnabled(true);
+        verify(scanner).setEnabled(false);
+        verify(ui).setState(EBorrowState.INITIALIZED);
+        verify(ui).displayErrorMessage(any(String.class));
+        
+        //asserts
+        assertEquals(EBorrowState.INITIALIZED, ctl_.getState());
     }
 
 }
