@@ -20,110 +20,117 @@ import static org.mockito.Mockito.*;
 
 public class BookMapDAOTest {
 
-	IBookHelper bookHelper;
-	IBook book1;
-	IBook book2;
+	IBookHelper mockBookHelper;
+	IBook mockBook1;	
+	IBook mockBook2;
+	BookMapDAO bookMapDao;
+	String name1 = "Simon Lowe";
+	String title1 = "The Bird";
+	String callNo1 = "JHJH";
 	
 	@Before
     public void setUp()
 	{
-        bookHelper = mock(IBookHelper.class);
-        book1 = mock(IBook.class);
-        book2 = mock(IBook.class);
+        mockBookHelper = mock(IBookHelper.class);
+        mockBook1 = mock(IBook.class);
+        mockBook2 = mock(IBook.class);
         
-        when(book1.getID()).thenReturn(1);
-        when(book1.getAuthor()).thenReturn("Simon Lowe");
-        when(book1.getTitle()).thenReturn("The Bird");
+        when(mockBook1.getID()).thenReturn(1);
+        when(mockBook1.getAuthor()).thenReturn(name1);
+        when(mockBook1.getTitle()).thenReturn(title1);
         
-        when(book2.getID()).thenReturn(2);
-        when(book2.getAuthor()).thenReturn("Sarah Bell");
-        when(book2.getTitle()).thenReturn("The Castle");
+        when(mockBook2.getID()).thenReturn(2);
+        when(mockBook2.getAuthor()).thenReturn("Sarah Bell");
+        when(mockBook2.getTitle()).thenReturn("The Castle");
         
-        when(bookHelper.makeBook("Simon Lowe", "The Bird", "JHJH", 1)).thenReturn(book1);
-        when(bookHelper.makeBook("Sarah Bell", "The Castle", "IKIK", 2)).thenReturn(book2);
+        when(mockBookHelper.makeBook(name1, title1, callNo1, 1)).thenReturn(mockBook1);
+        when(mockBookHelper.makeBook("Sarah Bell", "The Castle", "IKIK", 2)).thenReturn(mockBook2);
+        
+        bookMapDao = new BookMapDAO(mockBookHelper);
+
     }
 	
 	
 	
 	public void clearSetUp()
 	{
-		bookHelper = null;
-		book1 = null;
-		book2 = null;
+		mockBookHelper = null;
+		mockBook1 = null;
+		mockBook2 = null;
+		
+		bookMapDao = null;
 	}
 	
 	
 	
-	@Test
-	public void testBookMapDAO() // ThrowsIllegalArgumentNull
-	{
-		try {
-			BookMapDAO bookMapDao = new BookMapDAO(null);
-			fail("Should have thrown IllegalArgumentException");
-		} catch (IllegalArgumentException e) {
-			assertTrue(true);
-		}
-	}
+    @Test
+    public void testCreateBookMapDAO() 
+    {
+            bookMapDao = new BookMapDAO(mockBookHelper);
+           
+            assertNotNull(bookMapDao);
+           
+   }
+
+    @Test
+    public void testCreateBookMapDAOHelperNull() // ThrowsIllegalArgumentNull
+    {
+        try {
+            bookMapDao = new BookMapDAO(null);
+            fail("Should have thrown IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+        }
+    }
 
 	
 	
 	@Test
 	public void testAddBook() {
-		IBookDAO testBook = mock(IBookDAO.class);
-
-		Book book = new Book("Maggie Stifvater", "Shiver", "JFJDJ1", 3);
-
-		when(testBook.addBook("Alex Flinn", "Beastly", "K684JE")).thenReturn(
-				book);
-
-		assertEquals(testBook.addBook("Alex Flinn", "Beastly", "K684JE"), book);
-	}
+	    
+	    //execute
+	    IBook actual = bookMapDao.addBook(name1, title1, callNo1);
+	    
+	    //asserts
+	    verify(mockBookHelper).makeBook(name1, title1, callNo1, 1);
+	    
+        assertEquals(actual, mockBook1);
+ 	}
 
 	
 	
 	@Test
 	public void testGetBookByID() {
-		setUp();
-		
-		BookMapDAO testBookById = mock(BookMapDAO.class);
-
-		Book book = new Book("Maggie Stifvater", "Shiver", "JFJDJ1", 3);
-
-		when(testBookById.getBookByID(3)).thenReturn(book);
-	
-		assertEquals(null, testBookById.getBookByID(-1));
-		assertEquals(3, book.getID());
-	
-		clearSetUp();
+	    
+        //execute
+        IBook actual = bookMapDao.addBook(name1, title1, callNo1);
+        
+        IBook mapBook = bookMapDao.getBookByID(1);
+        
+        //assert
+        assertEquals(mapBook, mockBook1);
 	}
 
 	
 	
 	@Test
 	public void testListBooks() {
-		setUp();
 		
-		BookMapDAO bookDao = new BookMapDAO(bookHelper);
+		bookMapDao.addBook(name1, title1, callNo1);
+		bookMapDao.addBook("Sarah Bell", "The Castle", "IKIK");
 		
-		bookDao.addBook("Simon Lowe", "The Bird", "JHJH");
-		bookDao.addBook("Sarah Bell", "The Castle", "IKIK");
-		
-		List<IBook> listBooks = bookDao.listBooks();
+		List<IBook> listBooks = bookMapDao.listBooks();
 		
 		assertEquals(2, listBooks.size());
-		assertTrue(listBooks.contains(book1));
-		assertTrue(listBooks.contains(book2));
-		
-		clearSetUp();
+		assertTrue(listBooks.contains(mockBook1));
+		assertTrue(listBooks.contains(mockBook2));
 	}
 
 	
 	
 	@Test
 	public void testFindBooksByAuthor() {
-		setUp();
-		
-		BookMapDAO bookDao = new BookMapDAO(bookHelper);
+		BookMapDAO bookDao = new BookMapDAO(mockBookHelper);
 		
 		bookDao.addBook("Simon Lowe", "The Bird", "JHJH");
 		bookDao.addBook("Sarah Bell", "The Castle", "IKIK");
@@ -134,17 +141,13 @@ public class BookMapDAOTest {
 		
 		assertEquals(1, listBooks.size());
 		assertEquals("Simon Lowe", theBird.getAuthor());
-
-		clearSetUp();
 	}
 
 	
 	
 	@Test
 	public void testFindBooksByTitle() {
-		setUp();
-		
-		BookMapDAO bookDao = new BookMapDAO(bookHelper);
+		BookMapDAO bookDao = new BookMapDAO(mockBookHelper);
 		
 		bookDao.addBook("Simon Lowe", "The Bird", "JHJH");
 		bookDao.addBook("Sarah Bell", "The Castle", "IKIK");
@@ -154,8 +157,6 @@ public class BookMapDAOTest {
 		IBook theCastle = listBooks.get(0);
 		
 		assertEquals("The Castle", theCastle.getTitle());
-
-		clearSetUp();
 	}
 
 	
@@ -164,7 +165,7 @@ public class BookMapDAOTest {
 	public void testFindBooksByAuthorTitle() {
 		setUp();
 		
-		BookMapDAO bookDao = new BookMapDAO(bookHelper);
+		BookMapDAO bookDao = new BookMapDAO(mockBookHelper);
 		
 		bookDao.addBook("Simon Lowe", "The Bird", "JHJH");
 		bookDao.addBook("Sarah Bell", "The Castle", "IKIK");
@@ -172,7 +173,7 @@ public class BookMapDAOTest {
 		List<IBook> listBooks = bookDao.findBooksByAuthorTitle("Simon Lowe", "The Bird");
 				
 		assertEquals(1, listBooks.size());
-		assertTrue(listBooks.contains(book1));
+		assertTrue(listBooks.contains(mockBook1));
 		
 		clearSetUp();
 	}

@@ -20,20 +20,24 @@ public class BookMapDAO implements IBookDAO{
 	public BookMapDAO (IBookHelper helper)
 	{
 		if(helper == null)
-			throw new IllegalArgumentException ("Error: Helper is invalid.");
+			throw new IllegalArgumentException ("Error: Helper is null.");
 	
 		this.helper_ = helper;
 		nextId_ = 1;
-		bookMap_ = new HashMap();
+		bookMap_ = new HashMap<Integer, IBook>();
 	}
+
+	
 	
 	@Override
 	public IBook addBook(String author, String title, String callNo) {
 		
 		if(author == null || author.isEmpty())
 			throw new IllegalArgumentException ("Error: Author is invalid.");
+		
 		if(title == null || title.isEmpty())
 			throw new IllegalArgumentException ("Error: Title is invalid.");
+		
 		if(callNo == null || callNo.isEmpty())
 			throw new IllegalArgumentException ("Error: Call Number is invalid.");
 		

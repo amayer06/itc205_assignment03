@@ -30,6 +30,8 @@ public class Book implements IBook{
 		this.title_ = title;
 		this.callNumber_ = callNumber;
 		this.id_ = id;
+        this.state_ = EBookState.AVAILABLE;
+
 	}
 
 	
@@ -49,7 +51,7 @@ public class Book implements IBook{
 	
 	public ILoan getLoan()
 	{
-		if(state_ != EBookState.ON_LOAN)
+		if(state_ != EBookState.ON_LOAN) 
 			return null;
 		else
 			return loan_;
@@ -81,6 +83,7 @@ public class Book implements IBook{
 			throw new RuntimeException("Book is not Lost");
 		
 		state_ = EBookState.LOST;
+		loan_ = null;
 	}
 	
 	
@@ -97,12 +100,10 @@ public class Book implements IBook{
 	
 	public void dispose()
 	{
-		if(state_ != EBookState.AVAILABLE)
-			throw new RuntimeException("Book is not Available");
-		if(state_ != EBookState.DAMAGED)
-			throw new RuntimeException("Book is not Damaged");
-		if(state_ != EBookState.LOST)
-			throw new RuntimeException("Book is not Lost");
+	    boolean disposable = (state_ == EBookState.AVAILABLE || state_ == EBookState.DAMAGED || state_ == EBookState.LOST);
+	    
+		if(!disposable)
+			throw new RuntimeException(String.format("Book is not disposable: %s", state_));
 		
 		state_ = EBookState.DISPOSED;
 	}
