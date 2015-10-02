@@ -20,7 +20,7 @@ import java.util.Date;
 
 public class BookEntityEntityIntegrationTests {
 
-	private  IBook testBook_;
+	private IBook testBook_;
     private ILoan testLoan_;
     private IMember testMember_;
 	

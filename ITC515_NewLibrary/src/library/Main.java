@@ -43,7 +43,7 @@ public class Main implements IMainListener {
 
 		
 		
-//		setupTestData();
+		setupTestData();
 	}
 
 

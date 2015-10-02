@@ -17,23 +17,25 @@ import library.entities.Book;
 
 public class BookHelperIntegrationTest {
 
-	private final String author = "Stephenie Meyer";
-	private final String title = "Twilight";
-	private final String callNumber = "JHFJDS";
-	private int id = 1;
+	private final String author_ = "Stephenie Meyer";
+	private final String title_ = "Twilight";
+	private final String callNumber_ = "JHFJDS";
+	private int id_ = 1;
 
 	@Test
 	public void testMakeBook() {
 
+		//execute
 		IBookHelper bookHelper = new BookHelper();
 
-		IBook book = bookHelper.makeBook(author, title, callNumber, id);
+		IBook book = bookHelper.makeBook(author_, title_, callNumber_, id_);
 		
+		//asserts
 		assertNotNull(book);
-        assertEquals(book.getAuthor(), author);
-        assertEquals(book.getTitle(), title);
-        assertEquals(book.getCallNumber(), callNumber);
-        assertEquals(book.getID(), id);
+        assertEquals(book.getAuthor(), author_);
+        assertEquals(book.getTitle(), title_);
+        assertEquals(book.getCallNumber(), callNumber_);
+        assertEquals(book.getID(), id_);
 		
 
 	}
