@@ -18,13 +18,23 @@ public class Book implements IBook{
 	public Book(String author, String title, String callNumber, int id)
 	{
 		if(author == null || author.isEmpty())
+		{
 			throw new IllegalArgumentException ("Error: Author is invalid.");
+		}
+		
 		if(title == null  || title.isEmpty())
+		{
 			throw new IllegalArgumentException ("Error: Title is invalid.");
+		}
+
 		if(callNumber == null || callNumber.isEmpty()) 
+		{
 			throw new IllegalArgumentException ("Error: Call Number is invalid.");
-		if (id <= 0) 
+		}
+		
+		if (id <= 0) {
 			throw new IllegalArgumentException ("Error: Id is invalid.");
+		}
 		
 		this.author_ = author;
 		this.title_ = title;
@@ -39,9 +49,14 @@ public class Book implements IBook{
 	public void borrow(ILoan loan)
 	{
 		if(loan == null)
+		{
 			throw new IllegalArgumentException ("Book is Available.");
+		}
+		
 		if(state_ != EBookState.AVAILABLE)
+		{
 			throw new RuntimeException("Book not Available");
+		}
 		
 		this.loan_ = loan;
 		this.state_ = EBookState.ON_LOAN;
@@ -52,7 +67,9 @@ public class Book implements IBook{
 	public ILoan getLoan()
 	{
 		if(state_ != EBookState.ON_LOAN) 
+		{
 			return null;
+		}
 		else
 			return loan_;
 	}
@@ -62,7 +79,9 @@ public class Book implements IBook{
 	public void returnBook(boolean damaged)
 	{
 		if(state_ != EBookState.ON_LOAN && state_ != EBookState.LOST )
+		{
 			throw new RuntimeException("Book is Available");
+		}
 		
 		if (damaged) 
 		{
@@ -80,7 +99,9 @@ public class Book implements IBook{
 	public void lose()
 	{
 		if(state_ != EBookState.ON_LOAN)
+		{
 			throw new RuntimeException("Book is not Lost");
+		}
 		
 		state_ = EBookState.LOST;
 		loan_ = null;
@@ -91,8 +112,9 @@ public class Book implements IBook{
 	public void repair()
 	{
 		if(state_ != EBookState.DAMAGED)
+		{
 			throw new RuntimeException("Book is not Damaged");
-		
+		}
 		state_ = EBookState.AVAILABLE;
 	}
 	
@@ -103,7 +125,9 @@ public class Book implements IBook{
 	    boolean disposable = (state_ == EBookState.AVAILABLE || state_ == EBookState.DAMAGED || state_ == EBookState.LOST);
 	    
 		if(!disposable)
+		{
 			throw new RuntimeException(String.format("Book is not disposable: %s", state_));
+		}
 		
 		state_ = EBookState.DISPOSED;
 	}
