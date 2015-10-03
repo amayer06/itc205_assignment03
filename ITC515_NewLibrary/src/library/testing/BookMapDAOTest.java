@@ -187,7 +187,7 @@ public class BookMapDAOTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddBookCallNumberIsBlank() {
 
-		/// execute
+		// execute
 		IBook actual = bookMapDao_.addBook(name1, title1, "");
 
 		// asserts
@@ -228,6 +228,19 @@ public class BookMapDAOTest {
 		assertTrue(listBooks.contains(mockBook1));
 		assertTrue(listBooks.contains(mockBook2));
 	}
+	
+	
+	
+	@Test
+	public void testListBooksIsEmpty() {
+
+		//execute
+		List<IBook> listBooks = bookMapDao_.listBooks();
+
+		// asserts
+		assertEquals(0, listBooks.size());
+		assertTrue(listBooks.isEmpty());
+	}
 
 	
 	
@@ -246,6 +259,44 @@ public class BookMapDAOTest {
 		assertEquals(1, listBooks.size());
 		assertEquals("Simon Lowe", theBird.getAuthor());
 	}
+	
+	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFindBooksByAuthorIsEmpty() {
+
+		// execute
+		IBook actual = bookMapDao_.addBook("", title1, callNo1);
+
+		verify(mockBookHelper_).makeBook("", title1, callNo1, 1);
+
+		List<IBook> listBooks = bookMapDao_.findBooksByAuthor("");
+
+		// asserts
+		assertTrue(listBooks.contains(actual));
+		assertNull(bookMapDao_.findBooksByAuthor(""));
+		
+		fail("Should have thrown IllegalArgumentException");
+	}
+	
+	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFindBooksByAuthorIsNull() {
+
+		// execute
+		IBook actual = bookMapDao_.addBook(null, title1, callNo1);
+
+		verify(mockBookHelper_).makeBook(null, title1, callNo1, 1);
+
+		List<IBook> listBooks = bookMapDao_.findBooksByAuthor(null);
+
+		// asserts
+		assertTrue(listBooks.contains(actual));
+		assertNull(bookMapDao_.findBooksByAuthor(null));
+		
+		fail("Should have thrown IllegalArgumentException");
+	}
 
 	
 	
@@ -263,6 +314,44 @@ public class BookMapDAOTest {
 		//asserts
 		assertEquals("The Castle", theCastle.getTitle());
 	}
+	
+	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFindBooksByTitleIsEmpty() {
+
+		// execute
+		IBook actual = bookMapDao_.addBook(name1, "", callNo1);
+
+		verify(mockBookHelper_).makeBook(name1, "", callNo1, 1);
+
+		List<IBook> listBooks = bookMapDao_.findBooksByTitle("");
+
+		// asserts
+		assertTrue(listBooks.contains(actual));
+		assertNull(bookMapDao_.findBooksByTitle(""));
+		
+		fail("Should have thrown IllegalArgumentException");
+	}
+	
+	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFindBooksByTitleIsNull() {
+
+		// execute
+		IBook actual = bookMapDao_.addBook(name1, null, callNo1);
+
+		verify(mockBookHelper_).makeBook(name1, null, callNo1, 1);
+
+		List<IBook> listBooks = bookMapDao_.findBooksByTitle(null);
+
+		// asserts
+		assertTrue(listBooks.contains(actual));
+		assertNull(bookMapDao_.findBooksByTitle(null));
+		
+		fail("Should have thrown IllegalArgumentException");
+	}
 
 	
 	
@@ -279,5 +368,43 @@ public class BookMapDAOTest {
 		//asserts
 		assertEquals(1, listBooks.size());
 		assertTrue(listBooks.contains(mockBook1));
+	}
+	
+	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFindBooksByAuthorTitleIsEmpty() {
+
+		// execute
+		IBook actual = bookMapDao_.addBook("", "", callNo1);
+
+		verify(mockBookHelper_).makeBook("", "", callNo1, 1);
+
+		List<IBook> listBooks = bookMapDao_.findBooksByAuthorTitle("","");
+
+		// asserts
+		assertTrue(listBooks.contains(actual));
+		assertNull(bookMapDao_.findBooksByAuthorTitle("",""));
+		
+		fail("Should have thrown IllegalArgumentException");
+	}
+	
+	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testFindBooksByAuthorTitleIsNull() {
+
+		// execute
+		IBook actual = bookMapDao_.addBook(null, null, callNo1);
+
+		verify(mockBookHelper_).makeBook(null, null, callNo1, 1);
+
+		List<IBook> listBooks = bookMapDao_.findBooksByAuthorTitle(null, null);
+
+		// asserts
+		assertTrue(listBooks.contains(actual));
+		assertNull(bookMapDao_.findBooksByAuthorTitle(null, null));
+		
+		fail("Should have thrown IllegalArgumentException");
 	}
 }
