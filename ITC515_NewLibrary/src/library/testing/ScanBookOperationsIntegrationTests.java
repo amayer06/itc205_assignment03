@@ -64,7 +64,7 @@ public class ScanBookOperationsIntegrationTests {
 
 		ctl_ = new BorrowUC_CTL(reader, scanner, printer, display, bookDAO, loanDAO, memberDAO, ui );
 
-		//setupTestData from Main.class
+		//setupTestData from Main.java
 		IBook[] book = new IBook[15];
 		IMember[] member = new IMember[6];
 
