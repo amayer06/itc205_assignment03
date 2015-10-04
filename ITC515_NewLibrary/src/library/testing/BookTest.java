@@ -325,7 +325,7 @@ public class BookTest {
 	
 	
 	@Test
-	public void testDisposeWhenDamaged() {
+	public void testDisposeWhenBookIsDamaged() {
 
 		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
 		book.borrow(mockLoan_);
@@ -341,7 +341,7 @@ public class BookTest {
 	
 	
 	@Test
-	public void testDisposeWhenLost() {
+	public void testDisposeWhenBookIsLost() {
 
 		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
 		book.borrow(mockLoan_);
@@ -357,7 +357,7 @@ public class BookTest {
 	
 	
 	@Test(expected = RuntimeException.class)
-	public void testDisposeThrowsRuntimeExceptionWhenOnLoan() {
+	public void testDisposeWhenBookIsOnLoan() {
 
 		Book book = new Book("Maggie Stifvater", "Forever", "W68XYK", 9);
 
