@@ -1,76 +1,73 @@
-package library;
+package library.testing;
 
-import library.daos.BookMapDAO;
-import library.daos.BookHelper;
-import library.daos.LoanHelper;
-import library.daos.LoanMapDAO;
-import library.daos.MemberHelper;
-import library.daos.MemberMapDAO;
-import library.hardware.CardReader;
-import library.hardware.Display;
-import library.hardware.Printer;
-import library.hardware.Scanner;
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.mockito.Mockito.*;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import library.interfaces.IMainListener;
+import library.BorrowUC_CTL;
+import library.daos.BookHelper;
+import library.daos.BookMapDAO;
+import library.daos.LoanHelper;
+import library.daos.LoanMapDAO;
+import library.daos.MemberHelper;
+import library.daos.MemberMapDAO;
+import library.entities.Book;
+import library.entities.Loan;
+import library.entities.Member;
+import library.interfaces.EBorrowState;
+import library.interfaces.IBorrowUI;
 import library.interfaces.daos.IBookDAO;
-import library.interfaces.daos.IBookHelper;
 import library.interfaces.daos.ILoanDAO;
 import library.interfaces.daos.IMemberDAO;
-import library.interfaces.daos.IMemberHelper;
 import library.interfaces.entities.IBook;
 import library.interfaces.entities.ILoan;
 import library.interfaces.entities.IMember;
-import library.panels.MainPanel;
+import library.interfaces.hardware.ICardReader;
+import library.interfaces.hardware.IDisplay;
+import library.interfaces.hardware.IPrinter;
+import library.interfaces.hardware.IScanner;
 
-public class Main implements IMainListener {
+public class ScanBookOperationsIntegrationTests {
+	BorrowUC_CTL ctl_;
 
-	private CardReader reader;
-	private Scanner scanner;
-	private Printer printer;
-	private Display display;
-	private IBookDAO bookDAO = new BookMapDAO(new BookHelper());
-	private ILoanDAO loanDAO = new LoanMapDAO(new LoanHelper());
-	private IMemberDAO memberDAO = new MemberMapDAO(new MemberHelper());
-	
-	public Main() {
-		reader = new CardReader();
-		scanner = new Scanner();
-		printer = new Printer();
-		display = new Display();
+	ICardReader reader;
+	IScanner scanner;
+	IPrinter printer;
+	IDisplay display;
+	IBorrowUI ui;
 
-		
-		
-		setupTestData();
-	}
+	IBookDAO bookDAO;
+	IMemberDAO memberDAO;
+	ILoanDAO loanDAO;
 
+	Date borrowDate_, dueDate_;
+	Calendar cal_;
 
-	public void showGUI() {		
-		reader.setVisible(true);
-		scanner.setVisible(true);
-		printer.setVisible(true);
-		display.setVisible(true);
-	}
+	@Before
+	public void setUp() throws Exception {
+		reader = mock(ICardReader.class);
+		scanner = mock(IScanner.class);
+		printer = mock(IPrinter.class);
+		display = mock(IDisplay.class);
+		ui = mock(IBorrowUI.class);
 
-	
-	@Override
-	public void borrowBooks() {
-		final BorrowUC_CTL ctl = new BorrowUC_CTL(reader, scanner, printer, display, 
-				 null, null, null);
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-            	ctl.initialise();
-            }
-        });		
-	}
+		bookDAO = new BookMapDAO(new BookHelper());
+		memberDAO = new MemberMapDAO(new MemberHelper());
+		loanDAO = new LoanMapDAO(new LoanHelper());
 
-	
-	private void setupTestData() {
-        IBook[] book = new IBook[15];
+		ctl_ = new BorrowUC_CTL(reader, scanner, printer, display, bookDAO, loanDAO, memberDAO, ui );
+
+		//setupTestData from Main.java
+		IBook[] book = new IBook[15];
 		IMember[] member = new IMember[6];
-		
+
 		book[0]  = bookDAO.addBook("author1", "title1", "callNo1");
 		book[1]  = bookDAO.addBook("author1", "title2", "callNo2");
 		book[2]  = bookDAO.addBook("author1", "title3", "callNo3");
@@ -86,17 +83,17 @@ public class Main implements IMainListener {
 		book[12] = bookDAO.addBook("author5", "title13", "callNo13");
 		book[13] = bookDAO.addBook("author5", "title14", "callNo14");
 		book[14] = bookDAO.addBook("author5", "title15", "callNo15");
-		
+
 		member[0] = memberDAO.addMember("fName0", "lName0", "0001", "email0");
 		member[1] = memberDAO.addMember("fName1", "lName1", "0002", "email1");
 		member[2] = memberDAO.addMember("fName2", "lName2", "0003", "email2");
 		member[3] = memberDAO.addMember("fName3", "lName3", "0004", "email3");
 		member[4] = memberDAO.addMember("fName4", "lName4", "0005", "email4");
 		member[5] = memberDAO.addMember("fName5", "lName5", "0006", "email5");
-		
+
 		Calendar cal = Calendar.getInstance();
 		Date now = cal.getTime();
-				
+
 		//create a member with overdue loans		
 		for (int i=0; i<2; i++) {
 			ILoan loan = loanDAO.createLoan(member[1], book[i]);
@@ -106,38 +103,54 @@ public class Main implements IMainListener {
 		cal.add(Calendar.DATE, ILoan.LOAN_PERIOD + 1);
 		Date checkDate = cal.getTime();		
 		loanDAO.updateOverDueStatus(checkDate);
-		
+
 		//create a member with maxed out unpaid fines
 		member[2].addFine(10.0f);
-		
+
 		//create a member with maxed out loans
 		for (int i=2; i<7; i++) {
 			ILoan loan = loanDAO.createLoan(member[3], book[i]);
 			loanDAO.commitLoan(loan);
 		}
-		
-		//a member with a fine, but not over the limit
-		member[4].addFine(5.0f);
-		
-		//a member with a couple of loans but not over the limit
-		for (int i=7; i<9; i++) {
-			ILoan loan = loanDAO.createLoan(member[5], book[i]);
-			loanDAO.commitLoan(loan);
-		}
 	}
 
-	
-	public static void main(String[] args) {
-		
-        // start the GUI
-		final Main main = new Main();
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-            	main.display.setDisplay(new MainPanel(main), "Main Menu");
-                main.showGUI();
-            }
-        });
-	}
 
+
+	@After
+	public void tearDown() throws Exception {
+	}
 	
+	
+	
+	@Test
+	public void testScanBook() {
+		//setup
+		ctl_.setState(EBorrowState.INITIALIZED);
+
+		//execute
+		ctl_.cardSwiped(1);
+
+		//verifies
+		verify(reader).setEnabled(false);
+		verify(scanner).setEnabled(true);
+		verify(ui).setState(EBorrowState.SCANNING_BOOKS);
+		verify(ui).displayMemberDetails(1, "fName0 lName0", "0001");
+		verify(ui).displayExistingLoan(any(String.class));    
+
+		//asserts
+		assertEquals(EBorrowState.SCANNING_BOOKS, ctl_.getState());
+
+		//execute
+		ctl_.bookScanned(10);
+
+		//verifies
+		verify(reader).setEnabled(true);
+		verify(scanner).setEnabled(true);
+		verify(ui).setState(EBorrowState.SCANNING_BOOKS);
+		verify(ui).displayScannedBookDetails("");
+		verify(ui).displayPendingLoan("");
+
+		//asserts
+		assertEquals(EBorrowState.SCANNING_BOOKS, ctl_.getState());
+	}
 }

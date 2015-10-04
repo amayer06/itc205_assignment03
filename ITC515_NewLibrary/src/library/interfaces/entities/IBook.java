@@ -16,6 +16,8 @@ public interface IBook {
 	
 	public EBookState getState();
 	
+	public void setState(EBookState state);
+	
 	public String getAuthor();
 	
 	public String getTitle();
